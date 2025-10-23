@@ -10,7 +10,6 @@ namespace BankApp.Console
 {
     public class Interface
     {
-        // run
         public void Run()
         {
             var interfaceLogic = new InterfaceLogic();
