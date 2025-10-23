@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankApp.Infrastructure
+{
+    public class LoginTable
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Column ("AccountId")]
+        public int AccountId { get; set; }
+
+        [Column ("Login")]
+        public string Login { get; set; }
+
+        [Column ("Password")]
+        public string Password { get; set; }
+
+        public virtual AccountsTable AccountsTable { get; set; }
+    }
+}
