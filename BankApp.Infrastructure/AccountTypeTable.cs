@@ -11,7 +11,7 @@ namespace BankApp.Infrastructure
     public class AccountTypeTable
     {
         [Key]
-        public int AccountTypeId {  get; set; }
+        public int TypeId {  get; set; }
 
         [Column ("AccType")]
         public string AccountType { get; set; }

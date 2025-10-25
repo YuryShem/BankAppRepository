@@ -8,18 +8,15 @@ using System.Threading.Tasks;
 
 namespace BankApp.Infrastructure
 {
-    public class LoginTable
+    public class LoginsTable
     {
         [Key]
         public int Id { get; set; }
-
-        [Column("PersonId")]
+        [Column ("PersonId")]
         public int PersonId { get; set; }
-
-        [Column("Login")]
+        [Column ("Login")]
         public string Login { get; set; }
-
-        [Column("Password")]
+        [Column ("Password")]
         public string Password { get; set; }
 
         public virtual PersonsTable PersonsTable { get; set; }

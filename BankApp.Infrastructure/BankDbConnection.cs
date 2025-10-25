@@ -15,7 +15,9 @@ namespace BankApp.Infrastructure
         public DbSet<AccountTypeTable> AccountTypes { get; set; }
         public DbSet<PersonsTable> Persons { get; set; }
         public DbSet<AccountBalanceTable> AccountBalance { get; set; }
-        public DbSet<LoginTable> LoginsAndPasswords { get; set; }
+        public DbSet<LoginTable> Logins { get; set; }
+
+        public DbSet<LoginsTable> LoginsTable { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,7 +35,7 @@ namespace BankApp.Infrastructure
             modelBuilder.Entity<AccountsTable>()
                 .HasOne(p => p.PersonsTable)
                 .WithMany()
-                .HasForeignKey(p => p.PersonId);
+                .HasForeignKey(a => a.AccountId);
 
             modelBuilder.Entity<AccountBalanceTable>()
                 .HasOne(a => a.AccountsTable)
@@ -41,9 +43,14 @@ namespace BankApp.Infrastructure
                 .HasForeignKey(a => a.AccountId);
 
             modelBuilder.Entity<LoginTable>()
-                .HasOne(a => a.AccountsTable)
+                .HasOne(p => p.PersonsTable)
                 .WithMany()
-                .HasForeignKey(a => a.AccountId);
+                .HasForeignKey(l => l.PersonId);
+
+            modelBuilder.Entity<LoginsTable>()
+                .HasOne(p => p.PersonsTable)
+                .WithMany()
+                .HasForeignKey(l => l.PersonId);
         }
     }
 }

@@ -4,6 +4,12 @@ namespace BankApp.Core
 {
     public abstract class Account
     {
+        public int AccountId { get; set; }
+
+        public string AccountName { get; set; }
+
+        public Person Person { get; set; }
+
         private string _accountType;
         public string AccountType { 
             get 
@@ -16,8 +22,8 @@ namespace BankApp.Core
             }
         }
 
-        private double _balance;
-        public double Balance { 
+        private decimal _balance;
+        public decimal Balance { 
             get
             {
                 return _balance;
