@@ -19,7 +19,7 @@ namespace BankApp.Services
                 //        return user.PersonId;
                 //    }
                 //}
-                var user = context.Logins.Where(l => l.Login == login && l.Password == password).First();
+                var user = context.Login.Where(l => l.Login == login && l.Password == password).First();
                 if (user != null)
                 {
                     return user.PersonId;
@@ -38,7 +38,7 @@ namespace BankApp.Services
         {
             using (var context = new BankDbConnection())
             {
-                var logins = context.Logins.Where(l => l.Login == login).ToList();
+                var logins = context.Login.Where(l => l.Login == login).ToList();
                 if (logins.Count > 0)
                 {
                     WriteLine("This login already exists. Please Try again or enter 'r' to register.");

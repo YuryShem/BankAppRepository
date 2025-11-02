@@ -9,7 +9,7 @@ using BankApp.Services;
 //start.Create("AccName1", 1);
 //start.Remove(2);
 
-//var run = new UserInteraction();
-//run.Run();
+var run = new UserInteraction();
+run.Run();
 
-LoginServices.Test();
+//LoginServices.Test();

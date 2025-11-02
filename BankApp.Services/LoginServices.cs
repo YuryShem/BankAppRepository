@@ -23,7 +23,6 @@ namespace BankApp.Services
                 isMatch = LoginChecks.IsValidPersonId(personId);
             }
             while (!isMatch);
-
             AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId)));
         }
 
@@ -45,7 +44,7 @@ namespace BankApp.Services
                     Password = password,
                     PersonId = person.PersonId
                 };
-                context.Logins.Add(logAndPassw);
+                context.Login.Add(logAndPassw);
                 context.SaveChanges();
 
                 AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(logAndPassw.PersonId)));
@@ -59,11 +58,11 @@ namespace BankApp.Services
                 var data = context.AccountBalance.Find(3);
                 WriteLine($"{data.Balance}");
 
-                var data1 = context.LoginsTable.Find(1);
+                var data1 = context.Login.Find(1);
                 WriteLine($"{data1.PersonId}, {data1.Login}, {data1.Password}");
 
-                //var data = context.AccountTypes.Find(1);
-                //WriteLine($"{data.AccountType}");
+                var data2 = context.AccountType.Find(1);
+                WriteLine($"{data2.AccountType}");
             }
         }
     }

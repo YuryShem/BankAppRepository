@@ -11,11 +11,17 @@ namespace BankApp.Infrastructure
     public class AccountTypeTable
     {
         [Key]
-        public int TypeId {  get; set; }
+        public int AccountTypeId {  get; set; }
 
         [Column ("AccType")]
         public string AccountType { get; set; }
-        
+
+        [Column("MonthlyFee")]
+        public decimal MonthlyFee { get; set; }
+
+        [Column("Interest")]
+        public decimal MonthlyInterest { get; set; }
+
         //public virtual ICollection<AccountsTable> Accounts { get; set; }
 
         //public AccountTypeTable()

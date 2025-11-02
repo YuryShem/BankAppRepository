@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankApp.Core
 {
-    public class BusinessAccount : Account
+    public class BusinessAccount : Account, IAccount
     {
         public override void Create(string accountName, int personId)
         {

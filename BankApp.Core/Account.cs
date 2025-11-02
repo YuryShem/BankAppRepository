@@ -2,7 +2,7 @@
 
 namespace BankApp.Core
 {
-    public abstract class Account
+    public abstract class Account : IAccount
     {
         public int AccountId { get; set; }
 
@@ -10,27 +10,49 @@ namespace BankApp.Core
 
         public Person Person { get; set; }
 
-        private string _accountType;
-        public string AccountType { 
-            get 
+        // new method
+        public int AccountTypeId
+        {
+            get
             {
-                return _accountType;
-            }
-            set
-            {
-                _accountType = value;
+                using (var context = new BankDbConnection())
+                {
+                    var account = context.Accounts.Find(AccountId);
+                    return account.AccountTypeId;
+                }
             }
         }
 
-        private decimal _balance;
+        //ubdated get and removed set
+        public string AccountType { 
+            get 
+            {
+                using (var context = new BankDbConnection())
+                {
+                    var accountType = context.AccountType.Find(AccountTypeId);
+                    return accountType.AccountType;
+                }
+            }
+        }
+
+        // updated get and set
         public decimal Balance { 
             get
             {
-                return _balance;
+                using (var context = new BankDbConnection())
+                {
+                    var accountBalance = context.AccountBalance.Where(a => a.AccountId == AccountId).First();
+                    return accountBalance.Balance;
+                }
             }
             set
             {
-                _balance = value;
+                using (var context = new BankDbConnection())
+                {
+                    var accountBalance = context.AccountBalance.Where(a => a.AccountId == AccountId).First();
+                    accountBalance.Balance = value;
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -67,6 +89,54 @@ namespace BankApp.Core
                 var account = context.Accounts.Find(accountId);
                 context.Accounts.Remove(account);
                 context.SaveChanges();
+            }
+        }
+
+
+        // new methods
+        public static void GetFee(int accountId, int accountTypeId)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
+                var accountTypeData = context.AccountType.Find(accountTypeId);
+                balance.Balance -= (balance.Balance * accountTypeData.MonthlyFee) / 100;
+                context.SaveChanges();
+            }
+        }
+
+        public static void AccrueInterest(int accountId, int accountTypeId)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
+                var accountTypeData = context.AccountType.Find(accountTypeId);
+                balance.Balance += (balance.Balance * accountTypeData.MonthlyInterest) / 100;
+                context.SaveChanges();
+            }
+        }
+
+        public static void ExecuteInterest()
+        {
+            using (var context = new BankDbConnection())
+            {
+                var accounts = context.Accounts.ToList();
+                foreach (var account in accounts)
+                {
+                    GetFee(account.AccountId, account.AccountTypeId);
+                    AccrueInterest(account.AccountId, account.AccountTypeId);
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public static void ExecuteOnSpecificDay()
+        {
+            DateTime now = DateTime.Now;
+            if (now.Day == 01 && now.TimeOfDay.Hours == 00 && now.TimeOfDay.Minutes == 00)
+            {
+                ExecuteInterest();
             }
         }
     }

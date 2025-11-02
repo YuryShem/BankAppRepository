@@ -7,7 +7,7 @@ using BankApp.Infrastructure;
 
 namespace BankApp.Core
 {
-    public class CheckingAccount : Account
+    public class CheckingAccount : Account, IAccount
     {
         public CheckingAccount() {}
 
