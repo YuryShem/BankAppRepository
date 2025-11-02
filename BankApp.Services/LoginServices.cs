@@ -13,7 +13,7 @@ namespace BankApp.Services
 {
     public class LoginServices
     {
-        public static void LogIn(string login, string password)
+        public static int LogIn(string login, string password)
         {
             bool isMatch;
             int personId;
@@ -23,10 +23,12 @@ namespace BankApp.Services
                 isMatch = LoginChecks.IsValidPersonId(personId);
             }
             while (!isMatch);
-            AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId)));
+            
+            //AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId)));
+            return personId;
         }
 
-        public static void DoRegister(string name, string surname, string login, string password)
+        public static int DoRegister(string name, string surname, string login, string password)
         {
             using (var context = new BankDbConnection())
             {
@@ -47,22 +49,8 @@ namespace BankApp.Services
                 context.Login.Add(logAndPassw);
                 context.SaveChanges();
 
-                AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(logAndPassw.PersonId)));
-            }
-        }
-
-        public static void Test()
-        {
-            using (var context = new BankDbConnection())
-            {
-                var data = context.AccountBalance.Find(3);
-                WriteLine($"{data.Balance}");
-
-                var data1 = context.Login.Find(1);
-                WriteLine($"{data1.PersonId}, {data1.Login}, {data1.Password}");
-
-                var data2 = context.AccountType.Find(1);
-                WriteLine($"{data2.AccountType}");
+                //AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(logAndPassw.PersonId)));
+                return logAndPassw.PersonId;
             }
         }
     }

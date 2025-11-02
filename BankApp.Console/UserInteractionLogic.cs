@@ -17,11 +17,11 @@ namespace BankApp.Console
 
             if (key == 'l')
             {
-                LoginServices.LogIn(UserInteraction.EnterLogin(), UserInteraction.EnterPassword());
+                LoginServices.LogIn(EnteringData.EnterLogin(), EnteringData.EnterPassword());
             }
             if (key == 'r')
             {
-                LoginServices.DoRegister(UserInteraction.EnterName(), UserInteraction.EnterSurname(), UserInteraction.EnterUniqueLogin(), UserInteraction.EnterPassword());
+                LoginServices.DoRegister(EnteringData.EnterName(), EnteringData.EnterSurname(), EnteringData.EnterUniqueLogin(), EnteringData.EnterPassword());
             }
         }
     }

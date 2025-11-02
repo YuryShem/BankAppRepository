@@ -89,11 +89,52 @@ namespace BankApp.Services
             IAccount account1 = new CheckingAccount();
             Console.WriteLine($"{account.AccountId}, {account.AccountName}, {account.AccountType}, {account.Person.Name}, {account.Person.Surname}, {account.CreatedAt}, {account.Balance}");
         }
-    // new output
+        // new output
         public static void AccountOutputNew(Account account)
         {
             Console.WriteLine($"Welcome {account.Person.Name} {account.Person.Surname}.");
             //Console.WriteLine($"Account \"{account.AccountName}\" have balance {GetBalance():C}");
+        }
+
+        public static void ChooseCheckingAccountAction()
+        {
+
+        }
+
+        public static void ChooseSavingAccountAction()
+        {
+
+        }
+
+        public static void ChooseBusinessAccountAction()
+        {
+
+        }
+
+        public static void ChooseAdminAccountAction()
+        {
+
+        }
+
+        public static void ChooseAccountForAction(int accountTypeId)
+        {
+            switch (accountTypeId)
+            {
+                case 1:
+                    ChooseCheckingAccountAction();
+                    break;
+                case 2: 
+                    ChooseSavingAccountAction();
+                    break;
+                case 3:
+                    ChooseBusinessAccountAction();
+                    break;
+                case 4:
+                    ChooseAdminAccountAction();
+                    break;
+                default:
+                    throw new ArgumentException("Error with type of account.");
+            };
         }
     }
 }

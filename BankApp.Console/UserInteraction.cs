@@ -41,81 +41,13 @@ namespace BankApp.Console
             return key.KeyChar;
         }
 
-        public static string EnterLogin()
+        public void UserPage(int personId)
         {
-            bool isMatch;
-            string login;
-            do
-            {
-                WriteLine("Enter login:");
-                login = ReadLine();
-                isMatch = string.IsNullOrEmpty(login);
-            }
-            while (isMatch);
+            Account account;
+            account = AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId));
+            WriteLine($"Yor balance is {account.Balance}");
+            WriteLine("Chose some action or click 'esc' to exit");
 
-            return login;
         }
-
-        public static string EnterUniqueLogin() // check true
-        {
-            bool isMatch;
-            string login;
-            do
-            {
-                WriteLine("Enter login:");
-                login = ReadLine();
-                isMatch = string.IsNullOrEmpty(login) && LoginChecks.IsUniqueLogin(login);
-            }
-            while (isMatch == false);
-
-            return login;
-        }
-
-        public static string EnterPassword()
-        {
-            bool isMatch;
-            string password;
-            do
-            {
-                WriteLine("Enter password:");
-                password = ReadLine();
-                isMatch = string.IsNullOrEmpty(password);
-            }
-            while (isMatch);
-
-            return password;
-        }
-
-        public static string EnterName()
-        {
-            bool isMatch;
-            string name;
-            do
-            {
-                WriteLine("Enter your name: ");
-                name = ReadLine();
-                isMatch = string.IsNullOrEmpty(name) && name.All(char.IsLetter);
-            }
-            while (isMatch == false);
-
-            return name;
-        }
-
-        public static string EnterSurname()
-        {
-            bool isMatch;
-            string surname;
-            do
-            {
-                WriteLine("Enter your surname");
-                surname = ReadLine();
-                isMatch = string.IsNullOrEmpty(surname) && surname.All(char.IsLetter);
-            }
-            while (isMatch == false);
-
-            return surname;
-        }
-
-        
     }
 }

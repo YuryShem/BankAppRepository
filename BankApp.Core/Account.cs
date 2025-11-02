@@ -94,13 +94,13 @@ namespace BankApp.Core
 
 
         // new methods
-        public static void GetFee(int accountId, int accountTypeId)
+        public static void GetMonthlyFee(int accountId, int accountTypeId)
         {
             using (var context = new BankDbConnection())
             {
                 var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
                 var accountTypeData = context.AccountType.Find(accountTypeId);
-                balance.Balance -= (balance.Balance * accountTypeData.MonthlyFee) / 100;
+                balance.Balance -= accountTypeData.MonthlyFee;
                 context.SaveChanges();
             }
         }
@@ -123,7 +123,7 @@ namespace BankApp.Core
                 var accounts = context.Accounts.ToList();
                 foreach (var account in accounts)
                 {
-                    GetFee(account.AccountId, account.AccountTypeId);
+                    GetMonthlyFee(account.AccountId, account.AccountTypeId);
                     AccrueInterest(account.AccountId, account.AccountTypeId);
                 }
 
