@@ -14,14 +14,13 @@ namespace BankApp.Console
     {
         public void Run()
         {
+            int personId;
             bool isEsc;
-            var key = new ConsoleKeyInfo();
             do
             {
-                UserInteractionLogic.DoLoginOrRegisterChoise(DoStartPage());
-                WriteLine("Enter 'esc' to exit or any other key to continue.");
-                key = ReadKey();
-                isEsc = Checks.IsKey(key, ConsoleKey.Escape);
+                personId = UserInteractionLogic.DoLoginOrRegisterChoise(DoStartPage());
+                UserPage(personId);
+                isEsc = KeyboardInput.EnterExitKey();
             }
             while (isEsc == false);
         }
@@ -43,11 +42,17 @@ namespace BankApp.Console
 
         public void UserPage(int personId)
         {
+            bool isEscape;
             Account account;
             account = AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId));
-            WriteLine($"Yor balance is {account.Balance}");
-            WriteLine("Chose some action or click 'esc' to exit");
-
+            do
+            {
+                WriteLine($"Yor balance is {account.Balance}");
+                WriteLine("Choose some action to continue.");
+                AccountServices.ChooseAccountForAction(account);
+                isEscape = KeyboardInput.EnterExitKey();
+            }
+            while (!isEscape);
         }
     }
 }

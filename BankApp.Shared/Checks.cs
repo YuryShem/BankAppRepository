@@ -2,7 +2,7 @@
 {
     public class Checks
     {
-        public static bool IsNumber(string number, int count)
+        public static bool IsAccountChoiseNumber(string number, int count)
         {
             if (int.TryParse(number, out int numb))
             {
@@ -10,8 +10,19 @@
             }
             else 
             {
-                Console.WriteLine("You enter uncorrect value. Please try again.");
                 return false; 
+            }
+        }
+
+        public static bool IsNumber(string number, int count)
+        {
+            if (int.TryParse(number, out int numb))
+            {
+                return numb < count ? true : false;
+            }
+            else
+            {
+                return false;
             }
         }
 

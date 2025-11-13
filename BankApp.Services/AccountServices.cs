@@ -86,7 +86,7 @@ namespace BankApp.Services
 
         public static void AccontOutput(Account account)
         {
-            IAccount account1 = new CheckingAccount();
+            Account account1 = new CheckingAccount();
             Console.WriteLine($"{account.AccountId}, {account.AccountName}, {account.AccountType}, {account.Person.Name}, {account.Person.Surname}, {account.CreatedAt}, {account.Balance}");
         }
         // new output
@@ -96,45 +96,117 @@ namespace BankApp.Services
             //Console.WriteLine($"Account \"{account.AccountName}\" have balance {GetBalance():C}");
         }
 
-        public static void ChooseCheckingAccountAction()
+        public static void ChooseCheckingAccountAction(Account account)
         {
-
-        }
-
-        public static void ChooseSavingAccountAction()
-        {
-
-        }
-
-        public static void ChooseBusinessAccountAction()
-        {
-
-        }
-
-        public static void ChooseAdminAccountAction()
-        {
-
-        }
-
-        public static void ChooseAccountForAction(int accountTypeId)
-        {
-            switch (accountTypeId)
+            int choiseNumber = KeyboardInput.InputTypeAccountChoise(4, KeyboardInput.checkingAccountChoise);
+            switch (choiseNumber)
             {
                 case 1:
-                    ChooseCheckingAccountAction();
+                    account.GetBalance(account);
                     break;
-                case 2: 
-                    ChooseSavingAccountAction();
+                case 2:
+                    account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    ChooseBusinessAccountAction();
+                    account.DoWithdraw(account);
                     break;
                 case 4:
-                    ChooseAdminAccountAction();
+                    account.TransferMoney(account.AccountId);
                     break;
                 default:
-                    throw new ArgumentException("Error with type of account.");
+                    throw new ArgumentException("This type of operation is unavailable.");
+            }
+        }
+
+        public static void ChooseSavingAccountAction(Account account)
+        {
+            int choiseNumber = KeyboardInput.InputTypeAccountChoise(3, KeyboardInput.savingAccountChoise);
+            switch (choiseNumber)
+            {
+                case 1:
+                    account.GetBalance(account);
+                    break;
+                case 2:
+                    account.Deposit(account.AccountId);
+                    break;
+                case 3:
+                    account.DoWithdraw(account);
+                    break;
+                default:
+                    throw new ArgumentException("This type of operation is unavailable.");
+            }
+        }
+
+        public static void ChooseBusinessAccountAction(Account account)
+        {
+            int choiseNumber = KeyboardInput.InputTypeAccountChoise(4, KeyboardInput.businessAccountChoise);
+            switch (choiseNumber)
+            {
+                case 1:
+                    account.GetBalance(account);
+                    break;
+                case 2:
+                    account.Deposit(account.AccountId);
+                    break;
+                case 3:
+                    account.DoWithdraw(account);
+                    break;
+                case 4:
+                    account.TransferMoney(account.AccountId);
+                    break;
+                default:
+                    throw new ArgumentException("This type of operation is unavailable.");
+            }
+        }
+
+        public static void ChooseAdminAccountAction(Account account)
+        {
+
+        }
+
+        public static void ChooseAccountForAction(Account account)
+        {
+            switch (account.AccountTypeId)
+            {
+                case 1:
+                    ChooseCheckingAccountAction(account);
+                    break;
+                case 2: 
+                    ChooseSavingAccountAction(account);
+                    break;
+                case 3:
+                    ChooseBusinessAccountAction(account);
+                    break;
+                case 4:
+                    ChooseAdminAccountAction(account);
+                    break;
+                default:
+                    throw new ArgumentException("This type of account is unavailable.");
             };
+        }
+
+        public static void ExecuteInterest()
+        {
+            using (var context = new BankDbConnection())
+            {
+                var accounts = context.Accounts.ToList();
+                foreach (var account in accounts)
+                {
+                    Account.GetMonthlyFee(account.AccountId, account.AccountTypeId);
+                    Account.AccrueInterest(account.AccountId, account.AccountTypeId);
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public static void ExecuteOnSpecificDay()
+        {
+            DateTime now = DateTime.Now;
+            if (now.Day == 01 && now.TimeOfDay.Hours == 00 && now.TimeOfDay.Minutes == 00)
+            {
+                ExecuteInterest();
+            }
         }
     }
 }

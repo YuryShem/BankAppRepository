@@ -7,7 +7,7 @@ using BankApp.Infrastructure;
 
 namespace BankApp.Core
 {
-    public class CheckingAccount : Account, IAccount
+    public class CheckingAccount : Account
     {
         public CheckingAccount() {}
 
@@ -33,6 +33,7 @@ namespace BankApp.Core
                 context.SaveChanges();
             }
         }
+
 
     }
 }
