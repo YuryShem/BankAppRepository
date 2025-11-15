@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BankApp.Core;
 using BankApp.Infrastructure;
 using BankApp.Shared;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BankApp.Services
 {
@@ -15,7 +16,7 @@ namespace BankApp.Services
         {
             using (var context = new BankDbConnection())
             {
-                var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList(); //.FirstOrDefault();
+                var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList(); 
                 if (personAccounts.Count > 0)
                 {
                     Console.WriteLine($"You have {personAccounts.Count} account(s):");
@@ -23,11 +24,23 @@ namespace BankApp.Services
                     {
                         Console.WriteLine($"{personAccounts.IndexOf(account) + 1}. {account.AccountName}");
                     }
+
+                    int accountIndex = KeyboardInput.InputAccountChoise(personAccounts.Count);
+                    if (accountIndex > 0)
+                    {
+                        accountIndex--;
+                        return personAccounts[accountIndex].AccountId;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-               
-                int accountIndex = KeyboardInput.InputAccountChoise(personAccounts.Count);
-                accountIndex--;
-                return personAccounts[accountIndex].AccountId;
+                else
+                {
+                    return 0;
+                }               
+                
             }
         }
 
@@ -98,7 +111,7 @@ namespace BankApp.Services
 
         public static void ChooseCheckingAccountAction(Account account)
         {
-            int choiseNumber = KeyboardInput.InputTypeAccountChoise(4, KeyboardInput.checkingAccountChoise);
+            int choiseNumber = KeyboardInput.InputAnyNumberChoise(4, KeyboardInput.checkingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -120,7 +133,7 @@ namespace BankApp.Services
 
         public static void ChooseSavingAccountAction(Account account)
         {
-            int choiseNumber = KeyboardInput.InputTypeAccountChoise(3, KeyboardInput.savingAccountChoise);
+            int choiseNumber = KeyboardInput.InputAnyNumberChoise(3, KeyboardInput.savingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -139,7 +152,7 @@ namespace BankApp.Services
 
         public static void ChooseBusinessAccountAction(Account account)
         {
-            int choiseNumber = KeyboardInput.InputTypeAccountChoise(4, KeyboardInput.businessAccountChoise);
+            int choiseNumber = KeyboardInput.InputAnyNumberChoise(4, KeyboardInput.businessAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -207,6 +220,33 @@ namespace BankApp.Services
             {
                 ExecuteInterest();
             }
+        }
+
+        public static int CreateAccount(int personId)
+        {
+            var account = SelectIAccount(ChooseAccountType()) ;
+            int accountId = account.Create(KeyboardInput.EnterAccountName(), personId);
+            return accountId;
+        }
+
+        public static int ChooseAccountType()
+        {
+            int accountType;
+            accountType = KeyboardInput.InputAnyNumberChoise(3, KeyboardInput.accountTypeChoise);
+            return accountType;
+        }
+
+        public static IAccount SelectIAccount(int accountType)
+        {
+            IAccount account = accountType switch
+            {
+                1 => new CheckingAccount(),
+                2 => new SavingAccount(),
+                3 => new BusinessAccount(),
+                _ => throw new Exception("This type of account is absent.")
+            };
+
+            return account;
         }
     }
 }

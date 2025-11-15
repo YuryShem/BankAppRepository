@@ -3,7 +3,7 @@ using System.Net.WebSockets;
 using BankApp.Infrastructure;
 using static System.Console;
 
-namespace BankApp.Services
+namespace BankApp.Shared
 {
     public class LoginChecks
     {
@@ -19,14 +19,17 @@ namespace BankApp.Services
                 //        return user.PersonId;
                 //    }
                 //}
-                var user = context.Login.Where(l => l.Login == login && l.Password == password).First();
-                if (user != null)
+                try
                 {
+                    var user = context.Login.Where(l => l.Login == login && l.Password == password).First();
+
                     return user.PersonId;
                 }
+                catch 
+                {
+                    return 0;
+                }
             }
-
-            return 0;
         }
 
         public static bool IsValidPersonId(int personId)

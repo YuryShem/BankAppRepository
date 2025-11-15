@@ -7,19 +7,19 @@ using static System.Console;
 using BankApp.Infrastructure;
 using BankApp.Core;
 using Microsoft.EntityFrameworkCore.Query.Internal;
-//using BankApp.Console;
+using BankApp.Shared;
 
 namespace BankApp.Services
 {
     public class LoginServices
     {
-        public static int LogIn(string login, string password)
+        public static int LogIn()
         {
             bool isMatch;
             int personId;
             do
             {
-                personId = LoginChecks.CheckLoginAndPassword(login, password);
+                personId = LoginChecks.CheckLoginAndPassword(EnteringData.EnterLogin(), EnteringData.EnterPassword());
                 isMatch = LoginChecks.IsValidPersonId(personId);
             }
             while (!isMatch);

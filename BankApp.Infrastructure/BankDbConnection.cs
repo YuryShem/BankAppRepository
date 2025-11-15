@@ -33,7 +33,7 @@ namespace BankApp.Infrastructure
             modelBuilder.Entity<AccountsTable>()
                 .HasOne(p => p.PersonsTable)
                 .WithMany()
-                .HasForeignKey(a => a.AccountId);
+                .HasForeignKey(a => a.PersonId);
 
             modelBuilder.Entity<AccountBalanceTable>()
                 .HasOne(a => a.AccountsTable)

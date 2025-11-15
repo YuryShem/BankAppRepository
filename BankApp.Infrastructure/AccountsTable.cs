@@ -26,7 +26,7 @@ namespace BankApp.Infrastructure
         public int PersonId { get; set; }
 
         [Column ("IBAN")]
-        public long IBAN {  get; set; }
+        public long IBAN { get; set; }
 
         public virtual AccountTypeTable AccountTypeTable { get; set; }
 

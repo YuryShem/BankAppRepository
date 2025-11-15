@@ -18,7 +18,7 @@ namespace BankApp.Console
             //int personId = 0;
             switch (key)
             {
-                case 'l': return LoginServices.LogIn(EnteringData.EnterLogin(), EnteringData.EnterPassword());
+                case 'l': return LoginServices.LogIn();
                 case 'r': return LoginServices.DoRegister(EnteringData.EnterName(), EnteringData.EnterSurname(), EnteringData.EnterUniqueLogin(), EnteringData.EnterPassword());
                 default: throw new ArgumentException(KeyboardInput.OutputStringIfNotCorrectValue());
             }

@@ -12,20 +12,20 @@ namespace BankApp.Console
 {
     public class UserInteraction
     {
-        public void Run()
+        public static void Run()
         {
             int personId;
             bool isEsc;
             do
             {
                 personId = UserInteractionLogic.DoLoginOrRegisterChoise(DoStartPage());
-                UserPage(personId);
+                DoUserChoisePage(personId);
                 isEsc = KeyboardInput.EnterExitKey();
             }
             while (isEsc == false);
         }
 
-        public char DoStartPage()
+        public static char DoStartPage()
         {
             bool isLOrR;
             var key = new ConsoleKeyInfo();
@@ -40,11 +40,24 @@ namespace BankApp.Console
             return key.KeyChar;
         }
 
-        public void UserPage(int personId)
+        public static void DoUserAccountChoise(int personId)
+        {
+            int accountId = AccountServices.SelectUserAccount(personId);
+            if (accountId != 0)
+            {
+                DoUserPage(accountId);
+            }
+            else
+            {
+                DoUserPage(AccountServices.CreateAccount(personId));
+            }
+        }
+
+        public static void DoUserPage(int accountId)
         {
             bool isEscape;
             Account account;
-            account = AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId));
+            account = AccountServices.InitializeAccount(accountId);
             do
             {
                 WriteLine($"Yor balance is {account.Balance}");
@@ -53,6 +66,46 @@ namespace BankApp.Console
                 isEscape = KeyboardInput.EnterExitKey();
             }
             while (!isEscape);
+        }
+
+        public static void DoUserChoisePage(int personId)
+        {
+            int accountId = AccountServices.SelectUserAccount(personId);
+            if (accountId > 0)
+            {
+                DoUserPage(accountId);
+            }
+            else
+            {
+                DoExitOrRegisterAccountChoise(DoEnterExitOrRegisterAccountChoise(), personId);
+            }
+        }
+
+        public static char DoEnterExitOrRegisterAccountChoise()
+        {
+            var key = new ConsoleKeyInfo();
+            bool isEOrR;
+            do
+            {
+                WriteLine("You haven't accounts. Do you whant exit or register new account? e/r");
+                key = ReadKey();
+                isEOrR = Checks.IsKey(key, ConsoleKey.E, ConsoleKey.R);
+            }
+            while (!isEOrR);
+            
+            return key.KeyChar;
+        }
+
+        public static void DoExitOrRegisterAccountChoise(char symbol, int personId)
+        {
+            if (symbol == 'e')
+            {
+                Run();
+            }
+            else if (symbol == 'r')
+            {
+                DoUserPage(AccountServices.CreateAccount(personId));
+            }
         }
     }
 }

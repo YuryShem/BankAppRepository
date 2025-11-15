@@ -69,7 +69,7 @@ namespace BankApp.Core
             }
         }
 
-        public abstract void Create(string accountName, int personId);
+        public long IBAN { get; set; }
 
         public void Update(int accountId)
         {

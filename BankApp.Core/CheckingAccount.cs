@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BankApp.Infrastructure;
+using BankApp.Shared;
 
 namespace BankApp.Core
 {
-    public class CheckingAccount : Account
+    public class CheckingAccount : Account, IAccount
     {
         public CheckingAccount() {}
 
-        public override void Create(string accountName, int personId)
+        public int Create(string accountName, int personId)
         {
             using (var context = new BankDbConnection())
             {
@@ -20,7 +21,8 @@ namespace BankApp.Core
                     AccountName = accountName,
                     AccountTypeId = 1,
                     PersonId = personId,
-                    TimeOfCreation = DateTime.Now
+                    TimeOfCreation = DateTime.Now,
+                    IBAN = EnteringData.CreateUniqueIBAN()
                 };
                 context.Accounts.Add(account);
                 context.SaveChanges();
@@ -31,9 +33,9 @@ namespace BankApp.Core
                 };
                 context.AccountBalance.Add(balance);
                 context.SaveChanges();
+
+                return account.AccountId;
             }
         }
-
-
     }
 }

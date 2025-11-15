@@ -1,4 +1,4 @@
-﻿using BankApp.Services;
+﻿using BankApp.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Console;
 
-namespace BankApp.Console
+namespace BankApp.Shared
 {
     public class EnteringData
     {
@@ -83,6 +83,44 @@ namespace BankApp.Console
             while (isMatch == false);
 
             return surname;
+        }
+
+        public static long CreateIBAN()
+        {
+            long min = 100000000000000000;
+            long max = 999999999999999999;
+            Random random = new Random();
+            byte[] buf = new byte[8];
+
+            random.NextBytes(buf);
+            long longRand = BitConverter.ToInt64(buf, 0);
+
+            return Math.Abs(longRand % (max - min)) + min;
+        }
+
+        public static long CreateUniqueIBAN()
+        {
+            bool isUniqueIBAN;
+            long iban;
+            using (var context = new BankDbConnection())
+            {
+                do
+                {
+                    iban = EnteringData.CreateIBAN();
+                    var accounts = context.Accounts.Where(l => l.IBAN == iban).ToList();
+                    if (accounts.Count > 0)
+                    {
+                        isUniqueIBAN = false;
+                    }
+                    else
+                    {
+                        isUniqueIBAN = true;
+                    }
+                }
+                while (!isUniqueIBAN);
+            }
+
+            return iban;
         }
     }
 }

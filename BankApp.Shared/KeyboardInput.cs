@@ -10,22 +10,22 @@ namespace BankApp.Shared
 {
     public class KeyboardInput
     {
-        public static int InputAccountChoise(int actionsCount)
+        public static int InputAccountChoise(int actionsCount)    // delete this method !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         {
             bool isCorrect;
             string number;
             do
             {
-                WriteLine("Enter a number of account to work or '0' to create new account:");
+                WriteLine("Enter a number of account to work or '0' to create new account or exit:");
                 number = ReadLine();
                 isCorrect = Checks.IsAccountChoiseNumber(number, actionsCount);
             }
-            while (isCorrect);
+            while (!isCorrect);
 
             return Convert.ToInt16(number);
         }
 
-        public static int InputTypeAccountChoise(int actionsCount, string message)
+        public static int InputAnyNumberChoise(int actionsCount, string message)
         {
             bool isCorrect;
             string number;
@@ -33,9 +33,9 @@ namespace BankApp.Shared
             {
                 WriteLine(message);
                 number = ReadLine();
-                isCorrect = Checks.IsNumber(number, actionsCount);
+                isCorrect = Checks.IsAccountChoiseNumber(number, actionsCount);
             }
-            while (isCorrect);
+            while (!isCorrect);
 
             return Convert.ToInt32(number);
         }
@@ -96,14 +96,31 @@ namespace BankApp.Shared
 
         public static bool EnterExitKey()
         {
-            var key = new ConsoleKeyInfo();
+            //var key = new ConsoleKeyInfo();
             bool isKey;
 
             WriteLine("Enter 'esc' to exit or any other key to continue.");
-            isKey = Checks.IsKey(key, ConsoleKey.Escape);
+            isKey = Checks.IsKey(ReadKey(), ConsoleKey.Escape);
 
             return isKey;
         }
+
+        public static string EnterAccountName()
+        {
+            bool isUniqueAccountName;
+            string accountName;
+            do
+            {
+                WriteLine("Enter name of your account.");
+                accountName = ReadLine();
+                isUniqueAccountName = Checks.IsUniqueAccountName(accountName);
+            }
+            while (!isUniqueAccountName);
+
+            return accountName;
+        }
+
+        public const string accountTypeChoise = "1. Checking account/" + "/n2. Saving account." + "n/3. BusinessAccount.";
 
         public const string checkingAccountChoise = "1. View balance." + "/n2. Account replenishment." + 
             "/n3. Cash withdrawal." + "/n4. Transfer to other cash.";
