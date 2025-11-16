@@ -11,6 +11,7 @@
     <ProjectReference Include="..\BankApp.Console\BankApp.Console.csproj" />
     <ProjectReference Include="..\BankApp.Core\BankApp.Core.csproj" />
     <ProjectReference Include="..\BankApp.Infrastructure\BankApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\BankApp.Services\BankApp.Services.csproj" />
   </ItemGroup>
 
 </Project>

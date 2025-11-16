@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BankApp.Infrastructure\BankApp.Infrastructure.csproj" />
-    <ProjectReference Include="..\BankApp.Shared\BankApp.Shared.csproj" />
   </ItemGroup>
 
 </Project>

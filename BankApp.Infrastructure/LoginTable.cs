@@ -13,15 +13,15 @@ namespace BankApp.Infrastructure
         [Key]
         public int Id { get; set; }
 
-        [Column ("AccountId")]
-        public int AccountId { get; set; }
+        [Column("PersonId")]
+        public int PersonId { get; set; }
 
-        [Column ("Login")]
+        [Column("Login")]
         public string Login { get; set; }
 
-        [Column ("Password")]
+        [Column("Password")]
         public string Password { get; set; }
 
-        public virtual AccountsTable AccountsTable { get; set; }
+        public virtual PersonsTable PersonsTable { get; set; }
     }
 }

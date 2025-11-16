@@ -12,11 +12,11 @@ namespace BankApp.Infrastructure
     public class BankDbConnection : DbContext
     {
         public DbSet<AccountsTable> Accounts { get; set; }
-        public DbSet<AccountTypeTable> AccountTypes { get; set; }
+        public DbSet<AccountTypeTable> AccountType { get; set; }
         public DbSet<PersonsTable> Persons { get; set; }
         public DbSet<AccountBalanceTable> AccountBalance { get; set; }
-        public DbSet<LoginTable> LoginsAndPasswords { get; set; }
-
+        public DbSet<LoginTable> Login { get; set; }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string path = @"F:\STUDY\JUNISWAT\BANKAPP\BANKAPP.INFRASTRUCTURE\BANKDB.MDF";
@@ -33,7 +33,7 @@ namespace BankApp.Infrastructure
             modelBuilder.Entity<AccountsTable>()
                 .HasOne(p => p.PersonsTable)
                 .WithMany()
-                .HasForeignKey(p => p.PersonId);
+                .HasForeignKey(a => a.PersonId);
 
             modelBuilder.Entity<AccountBalanceTable>()
                 .HasOne(a => a.AccountsTable)
@@ -41,9 +41,9 @@ namespace BankApp.Infrastructure
                 .HasForeignKey(a => a.AccountId);
 
             modelBuilder.Entity<LoginTable>()
-                .HasOne(a => a.AccountsTable)
+                .HasOne(p => p.PersonsTable)
                 .WithMany()
-                .HasForeignKey(a => a.AccountId);
+                .HasForeignKey(l => l.PersonId);
         }
     }
 }
