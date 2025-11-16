@@ -121,8 +121,8 @@ namespace BankApp.Core
         {
             try
             {
-                decimal amount = KeyboardInput.EnterAmount();
-                uint iban = KeyboardInput.EnterIBAN();
+                decimal amount = EnteringData.EnterAmount();
+                uint iban = EnteringData.EnterIBAN();
                 using (var context = new BankDbConnection())
                 {
                     var outputAccount = context.Accounts.Find(accountId);
@@ -134,11 +134,11 @@ namespace BankApp.Core
                     context.SaveChanges();
                 }
 
-                KeyboardInput.OutputSuccessOperation();
+                OutputData.OutputSuccessOperation();
             }
             catch
             {
-                KeyboardInput.OutputIfNotCorrectValue();
+                OutputData.OutputIfNotCorrectValue();
             }
         }
 
@@ -146,7 +146,7 @@ namespace BankApp.Core
         {
             try
             {
-                decimal amount = KeyboardInput.EnterAmount();
+                decimal amount = EnteringData.EnterAmount();
                 using (var context = new BankDbConnection())
                 {
                     //var account = context.Accounts.Find(accountId);  //why???
@@ -155,11 +155,11 @@ namespace BankApp.Core
                     context.SaveChanges();
                 }
 
-                KeyboardInput.OutputSuccessOperation();
+                OutputData.OutputSuccessOperation();
             }
             catch
             {
-                KeyboardInput.OutputIfNotCorrectValue();
+                OutputData.OutputIfNotCorrectValue();
             }
         }
 
@@ -202,7 +202,7 @@ namespace BankApp.Core
 
         public void Withdraw(int accountId)
         {
-            decimal amount = KeyboardInput.EnterAmount();
+            decimal amount = EnteringData.EnterAmount();
             using (var context = new BankDbConnection())
             {
                 var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();

@@ -20,7 +20,7 @@ namespace BankApp.Console
             {
                 case 'l': return LoginServices.LogIn();
                 case 'r': return LoginServices.DoRegister(EnteringData.EnterName(), EnteringData.EnterSurname(), EnteringData.EnterUniqueLogin(), EnteringData.EnterPassword());
-                default: throw new ArgumentException(KeyboardInput.OutputStringIfNotCorrectValue());
+                default: throw new ArgumentException(OutputData.OutputStringIfNotCorrectValue());
             }
 
 

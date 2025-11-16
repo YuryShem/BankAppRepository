@@ -25,7 +25,7 @@ namespace BankApp.Services
                         Console.WriteLine($"{personAccounts.IndexOf(account) + 1}. {account.AccountName}");
                     }
 
-                    int accountIndex = KeyboardInput.InputAccountChoise(personAccounts.Count);
+                    int accountIndex = EnteringData.InputAnyNumberChoise(personAccounts.Count, OutputData.userActionChoise);
                     if (accountIndex > 0)
                     {
                         accountIndex--;
@@ -111,7 +111,7 @@ namespace BankApp.Services
 
         public static void ChooseCheckingAccountAction(Account account)
         {
-            int choiseNumber = KeyboardInput.InputAnyNumberChoise(4, KeyboardInput.checkingAccountChoise);
+            int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.checkingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -133,7 +133,7 @@ namespace BankApp.Services
 
         public static void ChooseSavingAccountAction(Account account)
         {
-            int choiseNumber = KeyboardInput.InputAnyNumberChoise(3, KeyboardInput.savingAccountChoise);
+            int choiseNumber = EnteringData.InputAnyNumberChoise(3, OutputData.savingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -152,7 +152,7 @@ namespace BankApp.Services
 
         public static void ChooseBusinessAccountAction(Account account)
         {
-            int choiseNumber = KeyboardInput.InputAnyNumberChoise(4, KeyboardInput.businessAccountChoise);
+            int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.businessAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -225,14 +225,14 @@ namespace BankApp.Services
         public static int CreateAccount(int personId)
         {
             var account = SelectIAccount(ChooseAccountType()) ;
-            int accountId = account.Create(KeyboardInput.EnterAccountName(), personId);
+            int accountId = account.Create(EnteringData.EnterAccountName(), personId);
             return accountId;
         }
 
         public static int ChooseAccountType()
         {
             int accountType;
-            accountType = KeyboardInput.InputAnyNumberChoise(3, KeyboardInput.accountTypeChoise);
+            accountType = EnteringData.InputAnyNumberChoise(3, OutputData.accountTypeChoise);
             return accountType;
         }
 

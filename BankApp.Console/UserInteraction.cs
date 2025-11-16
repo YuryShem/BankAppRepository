@@ -20,7 +20,7 @@ namespace BankApp.Console
             {
                 personId = UserInteractionLogic.DoLoginOrRegisterChoise(DoStartPage());
                 DoUserChoisePage(personId);
-                isEsc = KeyboardInput.EnterExitKey();
+                isEsc = EnteringData.EnterExitKey();
             }
             while (isEsc == false);
         }
@@ -63,7 +63,7 @@ namespace BankApp.Console
                 WriteLine($"Yor balance is {account.Balance}");
                 WriteLine("Choose some action to continue.");
                 AccountServices.ChooseAccountForAction(account);
-                isEscape = KeyboardInput.EnterExitKey();
+                isEscape = EnteringData.EnterExitKey();
             }
             while (!isEscape);
         }

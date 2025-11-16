@@ -4,7 +4,7 @@ namespace BankApp.Shared
 {
     public class Checks
     {
-        public static bool IsAccountChoiseNumber(string number, int count)  //???????
+        public static bool IsAccountChoiseNumber(string number, int count)
         {
             if (int.TryParse(number, out int numb))
             {
