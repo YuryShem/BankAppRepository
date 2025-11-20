@@ -11,7 +11,6 @@ namespace BankApp.Core
 
         public Person Person { get; set; }
 
-        // new method
         public int AccountTypeId
         {
             get
@@ -24,7 +23,6 @@ namespace BankApp.Core
             }
         }
 
-        //ubdated get and removed set
         public string AccountType { 
             get 
             {
@@ -36,7 +34,6 @@ namespace BankApp.Core
             }
         }
 
-        // updated get and set
         public decimal Balance { 
             get
             {
@@ -71,19 +68,17 @@ namespace BankApp.Core
 
         public long IBAN { get; set; }
 
-        public void Update(int accountId)
+        public static void Update(int accountId)
         {
             using (var context = new BankDbConnection())
             {
-                //var accounts = context.Accounts.Where(a => a.AccountName.Contains("k")).ToList();
-
                 var account = context.Accounts.Find(accountId);
                 account.AccountName = "newName";
                 context.SaveChanges();
             }
         }
 
-        public void Remove(int accountId)
+        public static void Remove(int accountId)
         {
             using (var context = new BankDbConnection())
             {
@@ -93,8 +88,6 @@ namespace BankApp.Core
             }
         }
 
-
-        // new methods
         public static void GetMonthlyFee(int accountId, int accountTypeId)
         {
             using (var context = new BankDbConnection())
@@ -117,7 +110,7 @@ namespace BankApp.Core
             }
         }
 
-        public void TransferMoney(int accountId)
+        public static void TransferMoney(int accountId)
         {
             try
             {
@@ -142,14 +135,13 @@ namespace BankApp.Core
             }
         }
 
-        public void Deposit(int accountId)
+        public static void Deposit(int accountId)
         {
             try
             {
                 decimal amount = EnteringData.EnterAmount();
                 using (var context = new BankDbConnection())
                 {
-                    //var account = context.Accounts.Find(accountId);  //why???
                     var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
                     balance.Balance += amount;
                     context.SaveChanges();
@@ -163,11 +155,11 @@ namespace BankApp.Core
             }
         }
 
-        public void DoWithdraw(Account account)
+        public static void DoWithdraw(Account account)
         {
             if (account.AccountTypeId == 2)
             {
-                if ((DateTime.Now - account.CreatedAt).TotalDays > 365)   // add days to const or database
+                if ((DateTime.Now - account.CreatedAt).TotalDays > 365)   
                 {
                     Withdraw(account.AccountId);
                 }
@@ -182,12 +174,12 @@ namespace BankApp.Core
             }
         }
 
-        public void GetBalance(Account account)
+        public static void GetBalance(Account account)
         {
             Console.WriteLine($"Your balance is {account.Balance}");
         }
 
-        public decimal GetTransferFee(int accountTypeId)
+        public static decimal GetTransferFee(int accountTypeId)
         {
             decimal fee;
 
@@ -200,7 +192,7 @@ namespace BankApp.Core
             return fee;
         }
 
-        public void Withdraw(int accountId)
+        public static void Withdraw(int accountId)
         {
             decimal amount = EnteringData.EnterAmount();
             using (var context = new BankDbConnection())

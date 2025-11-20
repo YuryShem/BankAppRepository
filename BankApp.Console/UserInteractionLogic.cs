@@ -15,23 +15,12 @@ namespace BankApp.Console
     {
         public static int DoLoginOrRegisterChoise(char key)
         {
-            //int personId = 0;
             switch (key)
             {
                 case 'l': return LoginServices.LogIn();
                 case 'r': return LoginServices.DoRegister(EnteringData.EnterName(), EnteringData.EnterSurname(), EnteringData.EnterUniqueLogin(), EnteringData.EnterPassword());
                 default: throw new ArgumentException(OutputData.OutputStringIfNotCorrectValue());
             }
-
-
-            //if (key == 'l')
-            //{
-            //    return LoginServices.LogIn(EnteringData.EnterLogin(), EnteringData.EnterPassword());
-            //}
-            //if (key == 'r')
-            //{
-            //    return LoginServices.DoRegister(EnteringData.EnterName(), EnteringData.EnterSurname(), EnteringData.EnterUniqueLogin(), EnteringData.EnterPassword());
-            //}
         }
     }
 }

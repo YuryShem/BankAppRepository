@@ -24,7 +24,6 @@ namespace BankApp.Services
             }
             while (!isMatch);
             
-            //AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId)));
             return personId;
         }
 
@@ -49,7 +48,6 @@ namespace BankApp.Services
                 context.Login.Add(logAndPassw);
                 context.SaveChanges();
 
-                //AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(logAndPassw.PersonId)));
                 return logAndPassw.PersonId;
             }
         }

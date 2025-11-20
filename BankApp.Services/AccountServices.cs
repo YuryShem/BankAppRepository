@@ -54,35 +54,12 @@ namespace BankApp.Services
 
                 account.AccountId = accountId;
                 account.AccountName = dbAccount.AccountName;
-                //update with edits
-                //account.AccountType = GetAccountType(dbAccount.AccountTypeId);
                 account.CreatedAt = dbAccount.TimeOfCreation;
                 account.Person = PersonServices.GetPersonData(dbAccount.PersonId);
-                //update with edits
-                //account.Balance = GetAccountBalance(dbAccount.AccountId);
             }
 
             return account;
         }
-        // delete method
-        public static decimal GetAccountBalance(int accountId)
-        {
-            using (var context = new BankDbConnection())
-            {
-                var accountBalance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
-                return accountBalance.Balance;
-            }
-        }
-        // delete method
-        public static string GetAccountType(int accountTypeId)
-        {
-            using (var context = new BankDbConnection())
-            {
-                var accountType = context.AccountType.Find(accountTypeId);
-                return accountType.AccountType;
-            }
-        }
-
 
         public static Account SelectAccount(int accountType)
         {
@@ -97,34 +74,22 @@ namespace BankApp.Services
             return account;
         }
 
-        public static void AccontOutput(Account account)
-        {
-            Account account1 = new CheckingAccount();
-            Console.WriteLine($"{account.AccountId}, {account.AccountName}, {account.AccountType}, {account.Person.Name}, {account.Person.Surname}, {account.CreatedAt}, {account.Balance}");
-        }
-        // new output
-        public static void AccountOutputNew(Account account)
-        {
-            Console.WriteLine($"Welcome {account.Person.Name} {account.Person.Surname}.");
-            //Console.WriteLine($"Account \"{account.AccountName}\" have balance {GetBalance():C}");
-        }
-
         public static void ChooseCheckingAccountAction(Account account)
         {
             int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.checkingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
-                    account.GetBalance(account);
+                    Account.GetBalance(account);
                     break;
                 case 2:
-                    account.Deposit(account.AccountId);
+                    Account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    account.DoWithdraw(account);
+                    Account.DoWithdraw(account);
                     break;
                 case 4:
-                    account.TransferMoney(account.AccountId);
+                    Account.TransferMoney(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -137,13 +102,13 @@ namespace BankApp.Services
             switch (choiseNumber)
             {
                 case 1:
-                    account.GetBalance(account);
+                    Account.GetBalance(account);
                     break;
                 case 2:
-                    account.Deposit(account.AccountId);
+                    Account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    account.DoWithdraw(account);
+                    Account.DoWithdraw(account);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -156,16 +121,16 @@ namespace BankApp.Services
             switch (choiseNumber)
             {
                 case 1:
-                    account.GetBalance(account);
+                    Account.GetBalance(account);
                     break;
                 case 2:
-                    account.Deposit(account.AccountId);
+                    Account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    account.DoWithdraw(account);
+                    Account.DoWithdraw(account);
                     break;
                 case 4:
-                    account.TransferMoney(account.AccountId);
+                    Account.TransferMoney(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");

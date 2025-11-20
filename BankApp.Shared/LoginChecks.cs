@@ -11,14 +11,6 @@ namespace BankApp.Shared
         {
             using (var context = new BankDbConnection())
             {
-                //var users = context.LoginsAndPasswords.ToList();
-                //foreach (var user in users)
-                //{
-                //    if (login == user.Login && password == user.Password)
-                //    {
-                //        return user.PersonId;
-                //    }
-                //}
                 try
                 {
                     var user = context.Login.Where(l => l.Login == login && l.Password == password).First();

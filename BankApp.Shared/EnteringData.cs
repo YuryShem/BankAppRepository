@@ -25,7 +25,7 @@ namespace BankApp.Shared
             return login;
         }
 
-        public static string EnterUniqueLogin() // check true
+        public static string EnterUniqueLogin()
         {
             bool isMatch;
             string login;
@@ -123,21 +123,6 @@ namespace BankApp.Shared
             return iban;
         }
 
-        //public static int InputAccountChoise(int actionsCount)    // delete this method !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //{
-        //    bool isCorrect;
-        //    string number;
-        //    do
-        //    {
-        //        WriteLine("Enter a number of account to work or '0' to create new account or exit:");
-        //        number = ReadLine();
-        //        isCorrect = Checks.IsAccountChoiseNumber(number, actionsCount);
-        //    }
-        //    while (!isCorrect);
-
-        //    return Convert.ToInt16(number);
-        //}
-
         public static int InputAnyNumberChoise(int actionsCount, string message)
         {
             bool isCorrect;
@@ -187,7 +172,6 @@ namespace BankApp.Shared
 
         public static bool EnterExitKey()
         {
-            //var key = new ConsoleKeyInfo();
             bool isKey;
 
             WriteLine("Enter 'esc' to exit or any other key to continue.");

@@ -24,12 +24,5 @@ namespace BankApp.Infrastructure
 
         [Column("TransferFee")]
         public decimal TransferFee { get; set; }
-
-        //public virtual ICollection<AccountsTable> Accounts { get; set; }
-
-        //public AccountTypeTable()
-        //{
-        //    this.Accounts = new HashSet<AccountsTable>();
-        //}
     }
 }
