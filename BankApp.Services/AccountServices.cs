@@ -19,22 +19,11 @@ namespace BankApp.Services
                 var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList(); 
                 if (personAccounts.Count > 0)
                 {
-                    Console.WriteLine($"You have {personAccounts.Count} account(s):");
-                    foreach(var account in personAccounts)
-                    {
-                        Console.WriteLine($"{personAccounts.IndexOf(account) + 1}. {account.AccountName}");
-                    }
+                    OutputData.OutputUserAccountList(personId);
 
                     int accountIndex = EnteringData.InputAnyNumberChoise(personAccounts.Count, OutputData.userActionChoise);
-                    if (accountIndex > 0)
-                    {
-                        accountIndex--;
-                        return personAccounts[accountIndex].AccountId;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                    accountIndex--;
+                    return personAccounts[accountIndex].AccountId;
                 }
                 else
                 {

@@ -27,6 +27,19 @@ namespace BankApp.Shared
             return "You entered incorrect data. Please try again."; 
         }
 
+        public static void OutputUserAccountList(int personId)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList();
+                Console.WriteLine($"You have {personAccounts.Count} account(s):");
+                foreach (var account in personAccounts)
+                {
+                    Console.WriteLine($"{personAccounts.IndexOf(account) + 1}. {account.AccountName}");
+                }
+            }
+        }
+
         public static void OutputSuccessOperation()
         {
             WriteLine("Carried out successfully.");
