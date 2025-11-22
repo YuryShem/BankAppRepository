@@ -73,7 +73,7 @@ namespace BankApp.Core
             using (var context = new BankDbConnection())
             {
                 var account = context.Accounts.Find(accountId);
-                account.AccountName = "newName";
+                account.AccountName = EnteringData.EnterAccountName();
                 context.SaveChanges();
             }
         }

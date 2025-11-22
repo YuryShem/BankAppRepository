@@ -21,7 +21,7 @@ namespace BankApp.Services
                 {
                     OutputData.OutputUserAccountList(personId);
 
-                    int accountIndex = EnteringData.InputAnyNumberChoise(personAccounts.Count, OutputData.userActionChoise);
+                    int accountIndex = EnteringData.InputAccountChoise(personAccounts.Count, OutputData.userActionChoise);
                     accountIndex--;
                     return personAccounts[accountIndex].AccountId;
                 }
@@ -29,7 +29,6 @@ namespace BankApp.Services
                 {
                     return 0;
                 }               
-                
             }
         }
 
@@ -65,7 +64,7 @@ namespace BankApp.Services
 
         public static void ChooseCheckingAccountAction(Account account)
         {
-            int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.checkingAccountChoise);
+            int choiseNumber = EnteringData.InputNumberChoise(5, OutputData.checkingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -79,6 +78,9 @@ namespace BankApp.Services
                     break;
                 case 4:
                     Account.TransferMoney(account.AccountId);
+                    break;
+                case 5:
+                    Account.Update(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -87,7 +89,7 @@ namespace BankApp.Services
 
         public static void ChooseSavingAccountAction(Account account)
         {
-            int choiseNumber = EnteringData.InputAnyNumberChoise(3, OutputData.savingAccountChoise);
+            int choiseNumber = EnteringData.InputNumberChoise(4, OutputData.savingAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -99,6 +101,9 @@ namespace BankApp.Services
                 case 3:
                     Account.DoWithdraw(account);
                     break;
+                case 4:
+                    Account.Update(account.AccountId);
+                    break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
             }
@@ -106,7 +111,7 @@ namespace BankApp.Services
 
         public static void ChooseBusinessAccountAction(Account account)
         {
-            int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.businessAccountChoise);
+            int choiseNumber = EnteringData.InputNumberChoise(5, OutputData.businessAccountChoise);
             switch (choiseNumber)
             {
                 case 1:
@@ -120,6 +125,9 @@ namespace BankApp.Services
                     break;
                 case 4:
                     Account.TransferMoney(account.AccountId);
+                    break;
+                case 5:
+                    Account.Update(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -186,7 +194,7 @@ namespace BankApp.Services
         public static int ChooseAccountType()
         {
             int accountType;
-            accountType = EnteringData.InputAnyNumberChoise(3, OutputData.accountTypeChoise);
+            accountType = EnteringData.InputNumberChoise(3, OutputData.accountTypeChoise);
             return accountType;
         }
 

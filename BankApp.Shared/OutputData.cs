@@ -47,14 +47,15 @@ namespace BankApp.Shared
 
         public const string userActionChoise = "Enter a number of account to work or '0' to create new account or exit:";
 
-        public const string accountTypeChoise = "1. Checking account/" + "/n2. Saving account." + "n/3. BusinessAccount.";
+        public const string accountTypeChoise = "1. Checking account/" + "\n2. Saving account." + "\n3. BusinessAccount.";
 
-        public const string checkingAccountChoise = "1. View balance." + "/n2. Account replenishment." + 
-            "/n3. Cash withdrawal." + "/n4. Transfer to other cash.";
+        public const string checkingAccountChoise = "1. View balance." + "\n2. Account replenishment." + 
+            "\n3. Cash withdrawal." + "\n4. Transfer to other cash." + "\n5.Change account name.";
 
-        public const string savingAccountChoise = "1. View balance." + "/n2. Account replenishment." + "/n3. Cash withdrawal.";
+        public const string savingAccountChoise = "1. View balance." + "\n2. Account replenishment." + "\n3. Cash withdrawal." 
+            + "\n4.Change account name.";
 
-        public const string businessAccountChoise = "1. View balance." + "/n2. Account replenishment." +
-            "/n3. Cash withdrawal." + "/n4. Transfer to other cash.";
+        public const string businessAccountChoise = "1. View balance." + "\n2. Account replenishment." +
+            "\n3. Cash withdrawal." + "\n4. Transfer to other cash." + "\n5.Change account name.";
     }
 }

@@ -123,7 +123,7 @@ namespace BankApp.Shared
             return iban;
         }
 
-        public static int InputAnyNumberChoise(int actionsCount, string message)
+        public static int InputAccountChoise(int actionsCount, string message)
         {
             bool isCorrect;
             string number;
