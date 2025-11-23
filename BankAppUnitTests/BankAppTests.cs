@@ -70,18 +70,24 @@ namespace BankAppUnitTests
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void TestGetPersonData()
+        [Theory]
+        [InlineData(1, "Yury")]
+        public void TestGetPersonName(int personId, string expected)
         {
-            int personId = 1;
-            Person expected = new Person()
-            {
-                Id = personId,
-                Name = "Yury",
-                Surname = "Shemetov"
-            };
+            Person person = PersonServices.GetPersonData(personId);
 
-            Person actual = PersonServices.GetPersonData(personId);
+            string actual = person.Name;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(1, "Shemetov")]
+        public void TestGetPersonSurname(int personId, string expected)
+        {
+            Person person = PersonServices.GetPersonData(personId);
+
+            string actual = person.Surname;
 
             Assert.Equal(expected, actual);
         }
