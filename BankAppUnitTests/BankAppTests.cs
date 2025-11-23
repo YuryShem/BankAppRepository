@@ -85,5 +85,14 @@ namespace BankAppUnitTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Theory]
+        [InlineData(15, 1, 100, true)]
+        public void TestIsAllowedOverdraft(int accountId, int accountTypeId, decimal sum, bool expected)
+        {
+            bool actual = Checks.IsAllowedOverdraft(accountId, accountTypeId, sum);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

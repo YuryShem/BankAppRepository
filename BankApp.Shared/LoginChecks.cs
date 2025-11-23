@@ -34,9 +34,11 @@ namespace BankApp.Shared
             using (var context = new BankDbConnection())
             {
                 var logins = context.Login.Where(l => l.Login == login).ToList();
+
                 if (logins.Count > 0)
                 {
                     WriteLine("This login already exists. Please Try again or enter 'r' to register.");
+
                     return false;
                 }
                 else
@@ -51,6 +53,7 @@ namespace BankApp.Shared
             if (string.IsNullOrEmpty(login))
             {
                 WriteLine("You entered an empty value. Please try again.");
+
                 return true;
             }
             else
@@ -58,7 +61,5 @@ namespace BankApp.Shared
                 return false;
             }
         }
-
-        
     }
 }

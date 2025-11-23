@@ -43,6 +43,7 @@ namespace BankApp.Shared
             using (var context = new BankDbConnection())
             {
                 var accounts = context.Accounts.Where(l => l.AccountName == accountName).ToList();
+
                 if (accounts.Count > 0)
                 {
                     Console.WriteLine("This name of account already exists. Please try again.");
@@ -52,6 +53,17 @@ namespace BankApp.Shared
                 {
                     return true;
                 }
+            }
+        }
+
+        public static bool IsAllowedOverdraft(int accountId, int accountTypeId, decimal sum)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
+                var accountType = context.AccountType.Find(accountTypeId);
+
+                return balance.Balance - sum < accountType.Overdraft ? true : false;
             }
         }
     }

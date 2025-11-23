@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Console;
+﻿using static System.Console;
 using BankApp.Infrastructure;
 
 namespace BankApp.Shared
@@ -22,6 +17,7 @@ namespace BankApp.Shared
         {
             WriteLine("You entered incorrect data. Please try again.");
         }
+
         public static string OutputStringIfNotCorrectValue()
         {
             return "You entered incorrect data. Please try again."; 
@@ -32,6 +28,7 @@ namespace BankApp.Shared
             using (var context = new BankDbConnection())
             {
                 var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList();
+
                 Console.WriteLine($"You have {personAccounts.Count} account(s):");
                 foreach (var account in personAccounts)
                 {
@@ -43,6 +40,11 @@ namespace BankApp.Shared
         public static void OutputSuccessOperation()
         {
             WriteLine("Carried out successfully.");
+        }
+
+        public static void OutputIfValueMoreOverdraft() 
+        {
+            WriteLine("Error. Insufficient funds.");
         }
 
         public const string userActionChoise = "Enter a number of account to work or '0' to create new account or exit:";

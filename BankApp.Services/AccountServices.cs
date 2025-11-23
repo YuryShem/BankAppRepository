@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankApp.Core;
+﻿using BankApp.Core;
 using BankApp.Infrastructure;
 using BankApp.Shared;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BankApp.Services
 {
@@ -17,12 +11,13 @@ namespace BankApp.Services
             using (var context = new BankDbConnection())
             {
                 var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList(); 
+
                 if (personAccounts.Count > 0)
                 {
                     OutputData.OutputUserAccountList(personId);
-
                     int accountIndex = EnteringData.InputAccountChoise(personAccounts.Count, OutputData.userActionChoise);
                     accountIndex--;
+
                     return personAccounts[accountIndex].AccountId;
                 }
                 else
@@ -35,11 +30,12 @@ namespace BankApp.Services
         public static Account InitializeAccount(int accountId)
         {
             Account account;
+
             using (var context = new BankDbConnection())
             {
                 var dbAccount = context.Accounts.Find(accountId);
-                account = SelectAccount(dbAccount.AccountTypeId);
 
+                account = SelectAccount(dbAccount.AccountTypeId);
                 account.AccountId = accountId;
                 account.AccountName = dbAccount.AccountName;
                 account.CreatedAt = dbAccount.TimeOfCreation;
@@ -65,6 +61,7 @@ namespace BankApp.Services
         public static void ChooseCheckingAccountAction(Account account)
         {
             int choiseNumber = EnteringData.InputNumberChoise(5, OutputData.checkingAccountChoise);
+
             switch (choiseNumber)
             {
                 case 1:
@@ -90,6 +87,7 @@ namespace BankApp.Services
         public static void ChooseSavingAccountAction(Account account)
         {
             int choiseNumber = EnteringData.InputNumberChoise(4, OutputData.savingAccountChoise);
+
             switch (choiseNumber)
             {
                 case 1:
@@ -112,6 +110,7 @@ namespace BankApp.Services
         public static void ChooseBusinessAccountAction(Account account)
         {
             int choiseNumber = EnteringData.InputNumberChoise(5, OutputData.businessAccountChoise);
+
             switch (choiseNumber)
             {
                 case 1:
@@ -165,12 +164,12 @@ namespace BankApp.Services
             using (var context = new BankDbConnection())
             {
                 var accounts = context.Accounts.ToList();
+
                 foreach (var account in accounts)
                 {
                     Account.GetMonthlyFee(account.AccountId, account.AccountTypeId);
                     Account.AccrueInterest(account.AccountId, account.AccountTypeId);
                 }
-
                 context.SaveChanges();
             }
         }
@@ -178,6 +177,7 @@ namespace BankApp.Services
         public static void ExecuteOnSpecificDay()
         {
             DateTime now = DateTime.Now;
+
             if (now.Day == 01 && now.TimeOfDay.Hours == 00 && now.TimeOfDay.Minutes == 00)
             {
                 ExecuteInterest();
@@ -188,14 +188,13 @@ namespace BankApp.Services
         {
             var account = SelectIAccount(ChooseAccountType()) ;
             int accountId = account.Create(EnteringData.EnterAccountName(), personId);
+
             return accountId;
         }
 
         public static int ChooseAccountType()
         {
-            int accountType;
-            accountType = EnteringData.InputNumberChoise(3, OutputData.accountTypeChoise);
-            return accountType;
+            return EnteringData.InputNumberChoise(3, OutputData.accountTypeChoise);
         }
 
         public static IAccount SelectIAccount(int accountType)

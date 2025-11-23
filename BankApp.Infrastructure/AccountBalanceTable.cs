@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankApp.Infrastructure
 {
@@ -12,8 +7,10 @@ namespace BankApp.Infrastructure
     {
         [Key]
         public int BalanceId { get; set; }
+
         [Column ("AccountId")]
         public int AccountId { get; set; }
+
         [Column ("Balance")]
         public decimal Balance {  get; set; }
 

@@ -1,10 +1,5 @@
 ﻿using BankApp.Infrastructure;
 using BankApp.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankApp.Core
 {
@@ -22,6 +17,7 @@ namespace BankApp.Core
                     TimeOfCreation = DateTime.Now,
                     IBAN = EnteringData.CreateUniqueIBAN()
                 };
+
                 context.Accounts.Add(account);
                 context.SaveChanges();
 
@@ -29,6 +25,7 @@ namespace BankApp.Core
                 {
                     AccountId = account.AccountId
                 };
+
                 context.AccountBalance.Add(balance);
                 context.SaveChanges();
 

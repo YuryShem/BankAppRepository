@@ -1,9 +1,4 @@
 ﻿using BankApp.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Console;
 
 namespace BankApp.Shared
@@ -14,6 +9,7 @@ namespace BankApp.Shared
         {
             bool isMatch;
             string login;
+
             do
             {
                 WriteLine("Enter login:");
@@ -29,6 +25,7 @@ namespace BankApp.Shared
         {
             bool isMatch;
             string login;
+
             do
             {
                 WriteLine("Enter login:");
@@ -44,6 +41,7 @@ namespace BankApp.Shared
         {
             bool isMatch;
             string password;
+
             do
             {
                 WriteLine("Enter password:");
@@ -59,6 +57,7 @@ namespace BankApp.Shared
         {
             bool isMatch;
             string name;
+
             do
             {
                 WriteLine("Enter your name: ");
@@ -74,6 +73,7 @@ namespace BankApp.Shared
         {
             bool isMatch;
             string surname;
+
             do
             {
                 WriteLine("Enter your surname");
@@ -102,12 +102,14 @@ namespace BankApp.Shared
         {
             bool isUniqueIBAN;
             long iban;
+
             using (var context = new BankDbConnection())
             {
                 do
                 {
                     iban = EnteringData.CreateIBAN();
                     var accounts = context.Accounts.Where(l => l.IBAN == iban).ToList();
+
                     if (accounts.Count > 0)
                     {
                         isUniqueIBAN = false;
@@ -127,11 +129,28 @@ namespace BankApp.Shared
         {
             bool isCorrect;
             string number;
+
             do
             {
                 WriteLine(message);
                 number = ReadLine();
                 isCorrect = Checks.IsAccountChoiseNumber(number, actionsCount);
+            }
+            while (!isCorrect);
+
+            return Convert.ToInt32(number);
+        }
+
+        public static int InputNumberChoise(int actionsCount, string message)
+        {
+            bool isCorrect;
+            string number;
+
+            do
+            {
+                WriteLine(message);
+                number = ReadLine();
+                isCorrect = Checks.IsRightNumber(number, actionsCount);
             }
             while (!isCorrect);
 
@@ -184,6 +203,7 @@ namespace BankApp.Shared
         {
             bool isUniqueAccountName;
             string accountName;
+
             do
             {
                 WriteLine("Enter name of your account.");

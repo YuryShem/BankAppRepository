@@ -1,10 +1,4 @@
 ﻿using BankApp.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankApp.Core
 {
@@ -25,6 +19,7 @@ namespace BankApp.Core
                     Name = name,
                     Surname = surname
                 };
+
                 context.Persons.Add(person);
                 context.SaveChanges();
             }
@@ -40,6 +35,7 @@ namespace BankApp.Core
             using (var context = new BankDbConnection())
             {
                 var person = context.Persons.Find(accountId);
+
                 context.Persons.Remove(person);
                 context.SaveChanges();
             }

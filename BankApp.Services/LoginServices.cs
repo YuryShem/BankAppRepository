@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Console;
-using BankApp.Infrastructure;
-using BankApp.Core;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+﻿using BankApp.Infrastructure;
 using BankApp.Shared;
 
 namespace BankApp.Services
@@ -17,6 +9,7 @@ namespace BankApp.Services
         {
             bool isMatch;
             int personId;
+
             do
             {
                 personId = LoginChecks.CheckLoginAndPassword(EnteringData.EnterLogin(), EnteringData.EnterPassword());
@@ -36,6 +29,7 @@ namespace BankApp.Services
                     Name = name,
                     Surname = surname
                 };
+
                 context.Persons.Add(person);
                 context.SaveChanges();
 
@@ -45,6 +39,7 @@ namespace BankApp.Services
                     Password = password,
                     PersonId = person.PersonId
                 };
+
                 context.Login.Add(logAndPassw);
                 context.SaveChanges();
 
