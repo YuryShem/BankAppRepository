@@ -7,8 +7,10 @@ namespace BankApp.Infrastructure
     {
         [Key]
         public int PersonId { get; set; }
+
         [Column ("Name")]
         public string Name { get; set; }
+
         [Column ("Surname")]
         public string Surname { get; set; }
     }

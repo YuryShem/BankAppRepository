@@ -1,11 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BankApp.Infrastructure
 {
@@ -20,6 +13,7 @@ namespace BankApp.Infrastructure
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string path = @"F:\STUDY\JUNISWAT\BANKAPP\BANKAPP.INFRASTRUCTURE\BANKDB.MDF";
+
             optionsBuilder.UseSqlServer($"Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = {path}; Integrated Security = True");
         }
 

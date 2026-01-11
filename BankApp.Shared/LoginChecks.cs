@@ -2,6 +2,8 @@
 using System.Net.WebSockets;
 using BankApp.Infrastructure;
 using static System.Console;
+using BankApp.Shared;
+using BankApp.Shared.Exeptions;
 
 namespace BankApp.Shared
 {
@@ -11,14 +13,6 @@ namespace BankApp.Shared
         {
             using (var context = new BankDbConnection())
             {
-                //var users = context.LoginsAndPasswords.ToList();
-                //foreach (var user in users)
-                //{
-                //    if (login == user.Login && password == user.Password)
-                //    {
-                //        return user.PersonId;
-                //    }
-                //}
                 try
                 {
                     var user = context.Login.Where(l => l.Login == login && l.Password == password).First();
@@ -28,6 +22,23 @@ namespace BankApp.Shared
                 catch 
                 {
                     return 0;
+                }
+            }
+        }
+
+        public static int CheckLoginAndPasswordForWebApi(string login, string password)
+        {
+            using (var context = new BankDbConnection())
+            {
+                try
+                {
+                    var user = context.Login.Where(l => l.Login == login && l.Password == password).First();
+
+                    return user.PersonId;
+                }
+                catch
+                {
+                    throw new LoginException(login, password);
                 }
             }
         }
@@ -42,9 +53,11 @@ namespace BankApp.Shared
             using (var context = new BankDbConnection())
             {
                 var logins = context.Login.Where(l => l.Login == login).ToList();
+
                 if (logins.Count > 0)
                 {
-                    WriteLine("This login already exists. Please Try again or enter 'r' to register.");
+                    //WriteLine("This login already exists. Please Try again or enter 'r' to register.");
+
                     return false;
                 }
                 else
@@ -59,6 +72,7 @@ namespace BankApp.Shared
             if (string.IsNullOrEmpty(login))
             {
                 WriteLine("You entered an empty value. Please try again.");
+
                 return true;
             }
             else
@@ -66,7 +80,5 @@ namespace BankApp.Shared
                 return false;
             }
         }
-
-        
     }
 }

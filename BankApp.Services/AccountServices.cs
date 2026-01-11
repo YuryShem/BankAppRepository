@@ -1,88 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankApp.Core;
+﻿using BankApp.Core;
 using BankApp.Infrastructure;
 using BankApp.Shared;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using BankApp.Shared.Exeptions;
 
 namespace BankApp.Services
 {
     public class AccountServices
     {
+        public static int SelectAccountForWebApi(int personId, int accountIndex)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList();
+
+                accountIndex--;
+
+                int accountId = personAccounts[accountIndex].AccountId;
+
+                return accountId;
+            }
+        }
+
         public static int SelectUserAccount(int personId)
         {
             using (var context = new BankDbConnection())
             {
                 var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList(); 
+
                 if (personAccounts.Count > 0)
                 {
-                    Console.WriteLine($"You have {personAccounts.Count} account(s):");
-                    foreach(var account in personAccounts)
-                    {
-                        Console.WriteLine($"{personAccounts.IndexOf(account) + 1}. {account.AccountName}");
-                    }
+                    OutputData.OutputUserAccountList(personId);
+                    int accountIndex = EnteringData.InputAccountChoise(personAccounts.Count, OutputData.userActionChoise);
+                    accountIndex--;
 
-                    int accountIndex = EnteringData.InputAnyNumberChoise(personAccounts.Count, OutputData.userActionChoise);
-                    if (accountIndex > 0)
-                    {
-                        accountIndex--;
-                        return personAccounts[accountIndex].AccountId;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                    return personAccounts[accountIndex].AccountId;
                 }
                 else
                 {
                     return 0;
                 }               
-                
             }
         }
 
         public static Account InitializeAccount(int accountId)
         {
             Account account;
+
             using (var context = new BankDbConnection())
             {
                 var dbAccount = context.Accounts.Find(accountId);
-                account = SelectAccount(dbAccount.AccountTypeId);
 
+                account = SelectAccount(dbAccount.AccountTypeId);
                 account.AccountId = accountId;
                 account.AccountName = dbAccount.AccountName;
-                //update with edits
-                //account.AccountType = GetAccountType(dbAccount.AccountTypeId);
                 account.CreatedAt = dbAccount.TimeOfCreation;
                 account.Person = PersonServices.GetPersonData(dbAccount.PersonId);
-                //update with edits
-                //account.Balance = GetAccountBalance(dbAccount.AccountId);
             }
 
             return account;
         }
-        // delete method
-        public static decimal GetAccountBalance(int accountId)
-        {
-            using (var context = new BankDbConnection())
-            {
-                var accountBalance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
-                return accountBalance.Balance;
-            }
-        }
-        // delete method
-        public static string GetAccountType(int accountTypeId)
-        {
-            using (var context = new BankDbConnection())
-            {
-                var accountType = context.AccountType.Find(accountTypeId);
-                return accountType.AccountType;
-            }
-        }
-
 
         public static Account SelectAccount(int accountType)
         {
@@ -97,34 +73,26 @@ namespace BankApp.Services
             return account;
         }
 
-        public static void AccontOutput(Account account)
-        {
-            Account account1 = new CheckingAccount();
-            Console.WriteLine($"{account.AccountId}, {account.AccountName}, {account.AccountType}, {account.Person.Name}, {account.Person.Surname}, {account.CreatedAt}, {account.Balance}");
-        }
-        // new output
-        public static void AccountOutputNew(Account account)
-        {
-            Console.WriteLine($"Welcome {account.Person.Name} {account.Person.Surname}.");
-            //Console.WriteLine($"Account \"{account.AccountName}\" have balance {GetBalance():C}");
-        }
-
         public static void ChooseCheckingAccountAction(Account account)
         {
-            int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.checkingAccountChoise);
+            int choiseNumber = EnteringData.InputNumberChoise(5, OutputData.checkingAccountChoise);
+
             switch (choiseNumber)
             {
                 case 1:
-                    account.GetBalance(account);
+                    Account.GetBalance(account);
                     break;
                 case 2:
-                    account.Deposit(account.AccountId);
+                    Account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    account.DoWithdraw(account);
+                    Account.DoWithdraw(account);
                     break;
                 case 4:
-                    account.TransferMoney(account.AccountId);
+                    Account.TransferMoney(account.AccountId);
+                    break;
+                case 5:
+                    Account.Update(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -133,17 +101,21 @@ namespace BankApp.Services
 
         public static void ChooseSavingAccountAction(Account account)
         {
-            int choiseNumber = EnteringData.InputAnyNumberChoise(3, OutputData.savingAccountChoise);
+            int choiseNumber = EnteringData.InputNumberChoise(4, OutputData.savingAccountChoise);
+
             switch (choiseNumber)
             {
                 case 1:
-                    account.GetBalance(account);
+                    Account.GetBalance(account);
                     break;
                 case 2:
-                    account.Deposit(account.AccountId);
+                    Account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    account.DoWithdraw(account);
+                    Account.DoWithdraw(account);
+                    break;
+                case 4:
+                    Account.Update(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -152,20 +124,24 @@ namespace BankApp.Services
 
         public static void ChooseBusinessAccountAction(Account account)
         {
-            int choiseNumber = EnteringData.InputAnyNumberChoise(4, OutputData.businessAccountChoise);
+            int choiseNumber = EnteringData.InputNumberChoise(5, OutputData.businessAccountChoise);
+
             switch (choiseNumber)
             {
                 case 1:
-                    account.GetBalance(account);
+                    Account.GetBalance(account);
                     break;
                 case 2:
-                    account.Deposit(account.AccountId);
+                    Account.Deposit(account.AccountId);
                     break;
                 case 3:
-                    account.DoWithdraw(account);
+                    Account.DoWithdraw(account);
                     break;
                 case 4:
-                    account.TransferMoney(account.AccountId);
+                    Account.TransferMoney(account.AccountId);
+                    break;
+                case 5:
+                    Account.Update(account.AccountId);
                     break;
                 default:
                     throw new ArgumentException("This type of operation is unavailable.");
@@ -203,12 +179,12 @@ namespace BankApp.Services
             using (var context = new BankDbConnection())
             {
                 var accounts = context.Accounts.ToList();
+
                 foreach (var account in accounts)
                 {
                     Account.GetMonthlyFee(account.AccountId, account.AccountTypeId);
                     Account.AccrueInterest(account.AccountId, account.AccountTypeId);
                 }
-
                 context.SaveChanges();
             }
         }
@@ -216,6 +192,7 @@ namespace BankApp.Services
         public static void ExecuteOnSpecificDay()
         {
             DateTime now = DateTime.Now;
+
             if (now.Day == 01 && now.TimeOfDay.Hours == 00 && now.TimeOfDay.Minutes == 00)
             {
                 ExecuteInterest();
@@ -226,14 +203,13 @@ namespace BankApp.Services
         {
             var account = SelectIAccount(ChooseAccountType()) ;
             int accountId = account.Create(EnteringData.EnterAccountName(), personId);
+
             return accountId;
         }
 
         public static int ChooseAccountType()
         {
-            int accountType;
-            accountType = EnteringData.InputAnyNumberChoise(3, OutputData.accountTypeChoise);
-            return accountType;
+            return EnteringData.InputNumberChoise(3, OutputData.accountTypeChoise);
         }
 
         public static IAccount SelectIAccount(int accountType)

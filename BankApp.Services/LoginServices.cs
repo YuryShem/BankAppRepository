@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Console;
-using BankApp.Infrastructure;
-using BankApp.Core;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+﻿using BankApp.Infrastructure;
 using BankApp.Shared;
 
 namespace BankApp.Services
-{
+{ 
     public class LoginServices
     {
         public static int LogIn()
         {
             bool isMatch;
             int personId;
+
             do
             {
                 personId = LoginChecks.CheckLoginAndPassword(EnteringData.EnterLogin(), EnteringData.EnterPassword());
@@ -24,7 +17,13 @@ namespace BankApp.Services
             }
             while (!isMatch);
             
-            //AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(personId)));
+            return personId;
+        }
+
+        public static int LogInForWebApi(string login, string password)
+        {
+            int personId = LoginChecks.CheckLoginAndPasswordForWebApi(login, password);
+            
             return personId;
         }
 
@@ -37,6 +36,7 @@ namespace BankApp.Services
                     Name = name,
                     Surname = surname
                 };
+
                 context.Persons.Add(person);
                 context.SaveChanges();
 
@@ -46,10 +46,10 @@ namespace BankApp.Services
                     Password = password,
                     PersonId = person.PersonId
                 };
+
                 context.Login.Add(logAndPassw);
                 context.SaveChanges();
 
-                //AccountServices.AccontOutput(AccountServices.InitializeAccount(AccountServices.SelectUserAccount(logAndPassw.PersonId)));
                 return logAndPassw.PersonId;
             }
         }

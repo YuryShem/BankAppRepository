@@ -1,11 +1,6 @@
 ﻿using BankApp.Core;
 using BankApp.Services;
 using BankApp.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Console;
 
 namespace BankApp.Console
@@ -16,6 +11,7 @@ namespace BankApp.Console
         {
             int personId;
             bool isEsc;
+
             do
             {
                 personId = UserInteractionLogic.DoLoginOrRegisterChoise(DoStartPage());
@@ -29,6 +25,7 @@ namespace BankApp.Console
         {
             bool isLOrR;
             var key = new ConsoleKeyInfo();
+
             do
             {
                 WriteLine("Do you whant to log in or register? l/r");
@@ -43,6 +40,7 @@ namespace BankApp.Console
         public static void DoUserAccountChoise(int personId)
         {
             int accountId = AccountServices.SelectUserAccount(personId);
+
             if (accountId != 0)
             {
                 DoUserPage(accountId);
@@ -56,8 +54,8 @@ namespace BankApp.Console
         public static void DoUserPage(int accountId)
         {
             bool isEscape;
-            Account account;
-            account = AccountServices.InitializeAccount(accountId);
+            Account account = AccountServices.InitializeAccount(accountId);
+
             do
             {
                 WriteLine($"Yor balance is {account.Balance}");
@@ -71,6 +69,7 @@ namespace BankApp.Console
         public static void DoUserChoisePage(int personId)
         {
             int accountId = AccountServices.SelectUserAccount(personId);
+
             if (accountId > 0)
             {
                 DoUserPage(accountId);
@@ -85,6 +84,7 @@ namespace BankApp.Console
         {
             var key = new ConsoleKeyInfo();
             bool isEOrR;
+
             do
             {
                 WriteLine("You haven't accounts. Do you whant exit or register new account? e/r");
