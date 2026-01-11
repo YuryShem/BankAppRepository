@@ -1,4 +1,5 @@
 ﻿using BankApp.Infrastructure;
+using System.Xml.Serialization;
 
 namespace BankApp.Core
 {
@@ -25,18 +26,28 @@ namespace BankApp.Core
             }
         }
 
-        //public static void Update(int personId)
-        //{
-
-        //}
-
-        public static void Remove(int accountId)
+        public static void Update(int personId, string name, string surname)
         {
             using (var context = new BankDbConnection())
             {
-                var person = context.Persons.Find(accountId);
+                var person = context.Persons.Find(personId);
+
+                person.Name = name;
+                person.Surname = surname;
+
+                context.SaveChanges();
+            }
+        }
+
+        public static void Remove(int personId)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var person = context.Persons.Find(personId);
+                var login = context.Login.Where(l => l.Id == personId).First();
 
                 context.Persons.Remove(person);
+                context.Login.Remove(login);
                 context.SaveChanges();
             }
         }

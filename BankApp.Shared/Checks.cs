@@ -56,6 +56,16 @@ namespace BankApp.Shared
             }
         }
 
+        public static bool IsPersonHaveAccounts(int personId)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var accounts = context.Accounts.Where(l => l.PersonId == personId).ToList();
+
+                return accounts.Count > 0 ? true : false;
+            }
+        }
+
         public static bool IsAllowedOverdraft(int accountId, int accountTypeId, decimal sum)
         {
             using (var context = new BankDbConnection())
@@ -63,7 +73,7 @@ namespace BankApp.Shared
                 var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
                 var accountType = context.AccountType.Find(accountTypeId);
 
-                return balance.Balance - sum < accountType.Overdraft ? true : false;
+                return balance.Balance - sum > 0 - accountType.Overdraft ? true : false;
             }
         }
     }

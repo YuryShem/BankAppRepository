@@ -2,6 +2,8 @@
 using System.Net.WebSockets;
 using BankApp.Infrastructure;
 using static System.Console;
+using BankApp.Shared;
+using BankApp.Shared.Exeptions;
 
 namespace BankApp.Shared
 {
@@ -24,6 +26,23 @@ namespace BankApp.Shared
             }
         }
 
+        public static int CheckLoginAndPasswordForWebApi(string login, string password)
+        {
+            using (var context = new BankDbConnection())
+            {
+                try
+                {
+                    var user = context.Login.Where(l => l.Login == login && l.Password == password).First();
+
+                    return user.PersonId;
+                }
+                catch
+                {
+                    throw new LoginException(login, password);
+                }
+            }
+        }
+
         public static bool IsValidPersonId(int personId)
         {
             return personId > 0 ? true : false;
@@ -37,7 +56,7 @@ namespace BankApp.Shared
 
                 if (logins.Count > 0)
                 {
-                    WriteLine("This login already exists. Please Try again or enter 'r' to register.");
+                    //WriteLine("This login already exists. Please Try again or enter 'r' to register.");
 
                     return false;
                 }

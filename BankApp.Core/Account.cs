@@ -1,5 +1,7 @@
 ﻿using BankApp.Infrastructure;
 using BankApp.Shared;
+using BankApp.Shared.Exeptions;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace BankApp.Core
 {
@@ -85,6 +87,17 @@ namespace BankApp.Core
             }
         }
 
+        public static void UpdateAccountNameFWA(int accountId, string accountName)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var account = context.Accounts.Find(accountId);
+
+                account.AccountName = accountName;
+                context.SaveChanges();
+            }
+        }
+
         public static void Remove(int accountId)
         {
             using (var context = new BankDbConnection())
@@ -92,6 +105,19 @@ namespace BankApp.Core
                 var account = context.Accounts.Find(accountId);
 
                 context.Accounts.Remove(account);
+                context.SaveChanges();
+            }
+        }
+
+        public static void RemoveFWA(int accountId)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var account = context.Accounts.Find(accountId);
+                var accountBalance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
+
+                context.Accounts.Remove(account);
+                context.AccountBalance.Remove(accountBalance);
                 context.SaveChanges();
             }
         }
@@ -160,6 +186,35 @@ namespace BankApp.Core
             }
         }
 
+        public static void TransferMoneyForWebApi(int accountId, long iban, decimal amount)
+        {
+            try
+            {
+                using (var context = new BankDbConnection())
+                {
+                    var outputAccount = context.Accounts.Find(accountId);
+                    var inputAccount = context.Accounts.Where(a => a.IBAN == iban).First();
+                    var outputBalance = context.AccountBalance.Where(a => a.AccountId == outputAccount.AccountId).First();
+                    var inputBalance = context.AccountBalance.Where(a => a.AccountId == inputAccount.AccountId).First();
+
+                    if (Checks.IsAllowedOverdraft(accountId, outputAccount.AccountTypeId, amount))
+                    {
+                        outputBalance.Balance -= (amount + GetTransferFee(outputAccount.AccountTypeId));
+                        inputBalance.Balance += amount;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new LoginException();
+                    }
+                }
+            }
+            catch
+            {
+                throw new LoginException();
+            }
+        }
+
         public static void Deposit(int accountId)
         {
             try
@@ -181,6 +236,24 @@ namespace BankApp.Core
             }
         }
 
+        public static void DepositForWebApi(int accountId, decimal amount)
+        {
+            try
+            {
+                using (var context = new BankDbConnection())
+                {
+                    var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
+
+                    balance.Balance += amount;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw new LoginException();
+            }
+        }
+
         public static void DoWithdraw(Account account)
         {
             if (account.AccountTypeId == 2)
@@ -193,6 +266,18 @@ namespace BankApp.Core
             }
         }
 
+        public static void DoWithdrawForWebApi(Account account, decimal amount)
+        {
+            if (account.AccountTypeId == 2)
+            {
+                DoSavingWithdrawForWebApi(account, amount);
+            }
+            else
+            {
+                WithdrawForWebApi(account.AccountId, amount);
+            }
+        }
+
         public static void DoSavingWithdraw(Account account)
         {
             if ((DateTime.Now - account.CreatedAt).TotalDays > 365)
@@ -202,6 +287,18 @@ namespace BankApp.Core
             else
             {
                 Console.WriteLine("Saving period isn't passed. Withdraw is blocked.");
+            }
+        }
+
+        public static void DoSavingWithdrawForWebApi(Account account, decimal amount)
+        {
+            if ((DateTime.Now - account.CreatedAt).TotalDays > 365)
+            {
+                WithdrawForWebApi(account.AccountId, amount);
+            }
+            else
+            {
+                throw new LoginException();
             }
         }
 
@@ -241,6 +338,25 @@ namespace BankApp.Core
                 else
                 {
                     OutputData.OutputIfValueMoreOverdraft();
+                }
+            }
+        }
+
+        public static void WithdrawForWebApi(int accountId, decimal amount)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var account = context.Accounts.Find(accountId);
+                var balance = context.AccountBalance.Where(a => a.AccountId == accountId).First();
+
+                if (Checks.IsAllowedOverdraft(accountId, account.AccountTypeId, amount))
+                {
+                    balance.Balance -= amount;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new LoginException();
                 }
             }
         }

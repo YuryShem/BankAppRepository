@@ -2,7 +2,7 @@
 using BankApp.Shared;
 
 namespace BankApp.Services
-{
+{ 
     public class LoginServices
     {
         public static int LogIn()
@@ -16,6 +16,13 @@ namespace BankApp.Services
                 isMatch = LoginChecks.IsValidPersonId(personId);
             }
             while (!isMatch);
+            
+            return personId;
+        }
+
+        public static int LogInForWebApi(string login, string password)
+        {
+            int personId = LoginChecks.CheckLoginAndPasswordForWebApi(login, password);
             
             return personId;
         }

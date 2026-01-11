@@ -1,11 +1,26 @@
 ﻿using BankApp.Core;
 using BankApp.Infrastructure;
 using BankApp.Shared;
+using BankApp.Shared.Exeptions;
 
 namespace BankApp.Services
 {
     public class AccountServices
     {
+        public static int SelectAccountForWebApi(int personId, int accountIndex)
+        {
+            using (var context = new BankDbConnection())
+            {
+                var personAccounts = context.Accounts.Where(a => a.PersonId == personId).ToList();
+
+                accountIndex--;
+
+                int accountId = personAccounts[accountIndex].AccountId;
+
+                return accountId;
+            }
+        }
+
         public static int SelectUserAccount(int personId)
         {
             using (var context = new BankDbConnection())
